@@ -1,0 +1,160 @@
+{% extends "base.html" %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% block contenidos %}
+
+    <div class="container">
+      <div class="row">
+        <div class="siderbar col-md-2">
+          <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
+            <div class="card-header"><h3>Calificación</h3></div>
+            <div class="card-body">
+              <div class="calificacion">
+                <ul>
+                  <li>
+                    <a href="{% url 'app:filter' 1 %}">
+                      <div class="stars-outer">
+                        <div class="stars-inner" style="width: 20%"></div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'app:filter' 2 %}">
+                      <div class="stars-outer">
+                        <div class="stars-inner" style="width: 40%"></div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'app:filter' 3 %}">
+                      <div class="stars-outer">
+                        <div class="stars-inner" style="width: 60%"></div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'app:filter' 4 %}">
+                      <div class="stars-outer">
+                        <div class="stars-inner" style="width: 80%"></div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'app:filter' 5 %}">
+                      <div class="stars-outer">
+                        <div class="stars-inner" style="width: 100%"></div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
+            <div class="card-header"><h3>Ordenar Por</h3></div>
+            <div class="card-body">
+              <div class="filtro">
+                <ul>
+                  <li><a href="{% url 'app:filter' 'nombre' %}">Nombre</a></li>
+                  <li>
+                    <a href="{% url 'app:filter' 'cal' %}">calificación</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'app:filter' 'votos' %}">Cant. Votos</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hoteles col-md-4">
+          {% for hotel in hoteles %}
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-5">
+                <img
+                  class="img-fluid"
+                  src="{% static 'img/hotel.png' %}"
+                  alt="..."
+                />
+              </div>
+              <div class="col-md-7">
+                <div class="card-body">
+                  <h5 class="card-title">{{hotel.nombre}}</h5>
+                  {{hotel.calificacion}}
+                  <div class="stars-outer">
+                    <div
+                      class="stars-inner"
+                      style="width:{{hotel.rating}}%"
+                    ></div>
+                  </div>
+                  ({{hotel.cant_votos}} votos)
+                  <p class="card-text">
+                    {{hotel.descripcion}} <br />{{hotel.direccion }}
+                  </p>
+                  <a
+                    href="{% url 'app:detalle_hotel' pk=hotel.id%}"
+                    class="btn btn-primary"
+                    >Ver ficha</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+
+        <div class="comentarios col-md-6">
+          <h2>comentarios</h2>
+          <ul class="list-group">
+            {% for comentario in comentarios %}
+            <li class="list-group-item">
+              <div class="row">
+                <div class="">
+                  <img
+                    src="http://placehold.it/80"
+                    class="img-circle img-responsive"
+                    alt=""
+                  />
+                </div>
+                <div class="col-xs-10 col-md-11">
+                  <div>
+                    <a href="#"> {{comentario.id_hotel.nombre}} </a>
+                    <div class="stars-outer">
+                      <div
+                        class="stars-inner"
+                        style="width:{{comentario.rating}}%"
+                      ></div>
+                    </div>
+                    <div class="mic-info">
+                      By:
+                      <a href="#">{{comentario.nombre_usuario}}</a>
+                      {{comentario.fecha}}
+                    </div>
+                  </div>
+                  <div class="comment-text">{{comentario.comentario}}</div>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {% endblock %} {% block script %}
+    <script src="{% static 'js/main.js' %}"></script>
+    {% endblock script %}
+  </body>
+</html>

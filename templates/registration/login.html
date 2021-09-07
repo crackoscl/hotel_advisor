@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+
+
+{% block contenidos %}
+
+<div class="container login">
+    {% if form.errors %}
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Los datos de autenticación no corresponden. Trata nuevamente.</h4>
+        </div>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">Tu cuenta no tiene acceso a este recurso.</h4>
+                <p>Debes tener los privilegios, contacta al administrador.</p>
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+                <p>Usted trató de entrar a una página protegida y aún no está autenticado.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+
+        <div class="control-group">
+            <label class="control-label" for="username">Nombre Usuario</label>
+            <div class="controls">
+                <input class="form-control" type="text" id="username" name="username" placeholder="Username">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Contraseña</label>
+            <div class="controls">
+                <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+            </div>
+        </div><br>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Enviar</button>
+        </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}

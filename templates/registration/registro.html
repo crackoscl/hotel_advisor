@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block contenidos %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <form method="post" novalidate="" class="col-md-8">
+      <h2>Registro de Usuario</h2>
+      {% csrf_token %} {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br />
+        {{ field }} {% for error in field.errors %}
+        <span class="input-group-text bg-white border-0 text-danger">
+          {{error}}
+        </span>
+        {% endfor %}
+      </p>
+      {% endfor %}
+      <div class="d-flex justify-content-center">
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-success">Registrar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
