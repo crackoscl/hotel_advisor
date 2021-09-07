@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import View, DetailView
 from .models import Hoteles, Comentarios
-from django.db.models import F, ExpressionWrapper, IntegerField, Avg, Q
+from django.db.models import F, ExpressionWrapper, IntegerField, Avg
 from .forms import RegisterUserForm
 from .user_permissions import is_pasajero
 
