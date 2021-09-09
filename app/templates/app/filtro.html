@@ -101,7 +101,7 @@
                   ({{hotel.cant_votos}} votos)
                   <p class="card-text">{{hotel.descripcion}}</p>
                   <a
-                    href="{% url 'app:detalle_hotel' pk=hotel.id%}"
+                    href="{% url 'app:detalle_hotel' slug=hotel.slug%}"
                     class="btn btn-primary"
                     >Ver ficha</a
                   >

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import pre_save
+from django.utils.text import slugify
 
 # Create your models here.
 
@@ -39,10 +41,16 @@ class Hoteles(models.Model):
         max_digits=11, decimal_places=2, default=0)
     cant_votos = models.IntegerField(default=0)
     atributos = models.ManyToManyField(Atributos, related_name='atributos')
+    slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Hoteles'
         ordering = ['-cant_votos']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.nombre)
+        super(Hoteles, self).save(*args, **kwargs)
 
     def __str__(self):
         """Unicode representation of MODELNAME."""
