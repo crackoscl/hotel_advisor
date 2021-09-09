@@ -130,7 +130,9 @@
                 </div>
                 <div class="col-xs-10 col-md-11">
                   <div>
-                    <a href="#"> {{comentario.id_hotel.nombre}} </a>
+                    <a href="{% url 'app:detalle_hotel' slug=hotel.slug%}">
+                      {{comentario.id_hotel.nombre}}
+                    </a>
                     <div class="stars-outer">
                       <div
                         class="stars-inner"
