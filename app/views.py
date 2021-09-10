@@ -1,5 +1,6 @@
 
 from django.db.models.aggregates import Count
+from django.db.models.query_utils import Q
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.contrib.auth import authenticate, login
@@ -106,6 +107,7 @@ def filter(request, pk):
 
         hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
             F('calificacion') * (100/5), output_field=IntegerField())).order_by('-calificacion')
+
     elif pk == 'votos':
         comentarios = Comentarios.objects.annotate(rating=ExpressionWrapper(
             F('calificacion_comentario') * (100/5), output_field=IntegerField()
@@ -124,4 +126,23 @@ def filter(request, pk):
                 F('calificacion') * (100/5), output_field=IntegerField())).filter(calificacion__range=[pk, pk+0.9])
         else:
             return redirect('app:principal')
-    return render(request, 'app/filtro.html', {'hoteles': hoteles, 'comentarios': comentarios})
+    return render(request, 'app/index.html', {'hoteles': hoteles, 'comentarios': comentarios})
+
+
+def search(request):
+    q = request.GET.get('q')
+    # error_msg = ''
+    if not q:
+        comentarios = Comentarios.objects.annotate(rating=ExpressionWrapper(
+            F('calificacion_comentario') * (100/5), output_field=IntegerField()
+        ))[:4]
+        # error_msg = "Porfavor ingrese una palabra clave"
+        return render(request, 'app/index.html', {'comentarios': comentarios})
+
+    comentarios = Comentarios.objects.annotate(rating=ExpressionWrapper(
+        F('calificacion_comentario') * (100/5), output_field=IntegerField()
+    ))[:4]
+
+    hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
+        F('calificacion') * (100/5), output_field=IntegerField())).filter(Q(nombre__icontains=q) | Q(descripcion__icontains=q))
+    return render(request, 'app/index.html', {'hoteles': hoteles, 'comentarios': comentarios})

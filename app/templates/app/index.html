@@ -1,14 +1,21 @@
 {% extends "base.html" %} {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
+
+    {% block search %}
+        <form class="d-flex" role="search" method="get" action="{% url 'app:search' %}">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              name="q"
+            />
+            <button class="btn btn-outline-success m-1" type="submit">
+              Buscar
+            </button>
+          </form>
+    {% endblock search %}
+
     {% block contenidos %}
 
     <div class="container">
@@ -111,7 +118,10 @@
               </div>
             </div>
           </div>
-
+            {% empty %}
+          <div class="alert alert-warning" role="alert">
+            No se encontraron Hoteles
+          </div>
           {% endfor %}
         </div>
 
