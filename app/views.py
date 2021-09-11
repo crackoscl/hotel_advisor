@@ -49,7 +49,7 @@ class Detalle(DetailView):
         context['comentarios'] = Comentarios.objects.filter(
             id_hotel=self.get_object().id).annotate(rating=ExpressionWrapper(
                 F('calificacion_comentario') * (100/5), output_field=IntegerField()
-            ))
+            ))[:4]
         return context
 
 
