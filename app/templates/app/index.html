@@ -85,6 +85,7 @@
         </div>
 
         <div class="hoteles col-md-5">
+        {% if hoteles %}
           {% for hotel in hoteles %}
           <div class="card mb-3" style="max-width: 540px">
             <div class="row g-0">
@@ -118,16 +119,22 @@
               </div>
             </div>
           </div>
-            {% empty %}
+          {% endfor %}
+
+          {%else %}
           <div class="alert alert-warning" role="alert">
             No se encontraron Hoteles
           </div>
-          {% endfor %}
+          {% endif %}
+          {% if hoteles %}
+              {% include 'app/pagination.html' %}
+          {% endif %}
         </div>
 
         <div class="comentarios col-md-5">
           <h2>comentarios</h2>
           <ul class="list-group">
+          {% if comentarios %}
             {% for comentario in comentarios %}
             <li class="list-group-item">
               <div class="row">
@@ -162,6 +169,11 @@
               </div>
             </li>
             {% endfor %}
+            {% else %}
+              <div class="alert alert-warning" role="alert">
+                No se encontraron Comentarios
+          </div>
+            {%endif %}
           </ul>
         </div>
       </div>

@@ -1,9 +1,11 @@
 
+from django.core import paginator
 from django.db.models.aggregates import Count
 from django.db.models.query_utils import Q
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import View, DetailView
 from .models import Hoteles, Comentarios
@@ -16,13 +18,20 @@ class Principal(View):
     template_name = 'app/index.html'
 
     def get(self, request, *args, **kwargs):
+
         comentarios = Comentarios.objects.annotate(rating=ExpressionWrapper(
             F('calificacion_comentario') * (100/5), output_field=IntegerField()
         ))[:4]
 
-        hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
+        list_hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
             F('calificacion') * (100/5), output_field=IntegerField()))
-        return render(request, self.template_name, {'hoteles': hoteles, 'comentarios': comentarios})
+        paginator = Paginator(list_hoteles, 3)
+        pagina = request.GET.get('page') or 1
+        hoteles = paginator.get_page(pagina)
+        pagina_actual = int(pagina)
+        paginas = range(1, hoteles.paginator.num_pages + 1)
+
+        return render(request, self.template_name, {'hoteles': hoteles, 'comentarios': comentarios, 'paginas': paginas, 'pagina_actual': pagina_actual})
 
 
 class Detalle(DetailView):
@@ -97,7 +106,7 @@ def filter(request, pk):
             F('calificacion_comentario') * (100/5), output_field=IntegerField()
         ))[:4]
 
-        hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
+        list_hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
             F('calificacion') * (100/5), output_field=IntegerField())).order_by('nombre')
 
     elif pk == 'cal':
@@ -105,7 +114,7 @@ def filter(request, pk):
             F('calificacion_comentario') * (100/5), output_field=IntegerField()
         ))[:4]
 
-        hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
+        list_hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
             F('calificacion') * (100/5), output_field=IntegerField())).order_by('-calificacion')
 
     elif pk == 'votos':
@@ -113,7 +122,7 @@ def filter(request, pk):
             F('calificacion_comentario') * (100/5), output_field=IntegerField()
         ))[:4]
 
-        hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
+        list_hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
             F('calificacion') * (100/5), output_field=IntegerField())).order_by('-cant_votos')
     else:
         if pk.isdigit():
@@ -122,11 +131,16 @@ def filter(request, pk):
             ))[:4]
 
             pk = float(pk)
-            hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
+            list_hoteles = Hoteles.objects.annotate(rating=ExpressionWrapper(
                 F('calificacion') * (100/5), output_field=IntegerField())).filter(calificacion__range=[pk, pk+0.9])
         else:
             return redirect('app:principal')
-    return render(request, 'app/index.html', {'hoteles': hoteles, 'comentarios': comentarios})
+    paginator = Paginator(list_hoteles, 3)
+    pagina = request.GET.get('page') or 1
+    hoteles = paginator.get_page(pagina)
+    pagina_actual = int(pagina)
+    paginas = range(1, hoteles.paginator.num_pages + 1)
+    return render(request, 'app/index.html', {'hoteles': hoteles, 'comentarios': comentarios, 'paginas': paginas, 'pagina_actual': pagina_actual})
 
 
 def search(request):

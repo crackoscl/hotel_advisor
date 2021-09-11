@@ -1,0 +1,34 @@
+<nav aria-label="...">
+  <ul class="pagination">
+    
+    {% if hoteles.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page=1">Primera pagina</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{hoteles.previous_page_number}}"
+        >&laquo;</a
+      >
+    </li>
+    {% endif %} 
+
+
+    {% for pagina in  paginas %}
+      <li class="page-item {% if pagina_actual == pagina %} active {% endif %}">
+        <a class="page-link" href="?page={{pagina}}">{{pagina}}</a>
+      </li>
+    {% endfor %}
+     
+  
+    {% if hoteles.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{hoteles.next_page_number}}">&raquo;</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{hoteles.paginator.num_pages}}"
+        >última</a
+      >
+    </li>
+    {% endif %}
+  </ul>
+</nav>
