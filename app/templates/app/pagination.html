@@ -1,6 +1,9 @@
 <nav aria-label="...">
+
+  {% if hoteles.has_other_pages %}
+
   <ul class="pagination">
-    
+  
     {% if hoteles.has_previous %}
     <li class="page-item">
       <a class="page-link" href="?page=1">Primera pagina</a>
@@ -30,5 +33,7 @@
       >
     </li>
     {% endif %}
+
   </ul>
+  {% endif %}
 </nav>
