@@ -17,7 +17,7 @@ class Usuario(AbstractUser):
     rol = models.CharField(max_length=50, choices=ROLES)
 
     class Meta:
-        verbose_name_plural = "Ususarios"
+        verbose_name_plural = "Usuarios"
 
     def __str__(self):
         return f"{self.username}"
