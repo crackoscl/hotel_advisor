@@ -1,3 +1,4 @@
+from typing_extensions import Required
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import pre_save
@@ -14,7 +15,7 @@ class Usuario(AbstractUser):
     apellido_materno = models.CharField(
         max_length=50, null=True, verbose_name="Apellido Materno"
     )
-    rol = models.CharField(max_length=50, choices=ROLES)
+    rol = models.CharField(max_length=50, choices=ROLES, Required=False)
 
     class Meta:
         verbose_name_plural = "Usuarios"
