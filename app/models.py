@@ -7,7 +7,8 @@ from django.utils.text import slugify
 
 
 class Usuario(AbstractUser):
-    ROLES = (("pasajero)", "Pasajero"),)
+    ROLES = (("pasajero", "Pasajero"),)
+
     apellido_paterno = models.CharField(
         max_length=50, null=True, verbose_name="Apellido Paterno"
     )
