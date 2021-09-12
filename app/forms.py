@@ -5,26 +5,29 @@ from django.db.models import fields
 from django.forms import TextInput, EmailInput, PasswordInput
 
 
-User = get_user_model()
+user = get_user_model()
 
 
 class RegisterUserForm(UserCreationForm):
     class Meta:
-        model = User
+        model = user
         fields = ["username", "email", "apellido_paterno", "apellido_materno"]
         widgets = {
             "username": TextInput(
-                attrs={"class": "form-control", "placeholder": "Nombre Usuario"}
+                attrs={"class": "form-control",
+                       "placeholder": "Nombre Usuario"}
             ),
             "email": EmailInput(
                 attrs={"class": "form-control", "placeholder": "Email"}
             ),
             "rut": TextInput(attrs={"class": "form-control", "placeholder": "Rut"}),
             "apellido_paterno": TextInput(
-                attrs={"class": "form-control", "placeholder": "Apellido paterno"}
+                attrs={"class": "form-control",
+                       "placeholder": "Apellido paterno"}
             ),
             "apellido_materno": TextInput(
-                attrs={"class": "form-control", "placeholder": "Apellido Materno"}
+                attrs={"class": "form-control",
+                       "placeholder": "Apellido Materno"}
             ),
         }
 
@@ -34,6 +37,7 @@ class RegisterUserForm(UserCreationForm):
             attrs={"class": "form-control", "placeholder": "Contraseña"}
         )
         self.fields["password2"].widget = PasswordInput(
-            attrs={"class": "form-control", "placeholder": "Confirmación Contraseña"}
+            attrs={"class": "form-control",
+                   "placeholder": "Confirmación Contraseña"}
         )
         self.fields["email"].required = True
