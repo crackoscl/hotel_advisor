@@ -107,7 +107,9 @@ def registro(request):
     if request.method == "POST":
         form = RegisterUserForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.rol = 'pasajero'
+            instance.save()
             user = authenticate(
                 username=form.cleaned_data["username"],
                 password=form.cleaned_data["password1"],
