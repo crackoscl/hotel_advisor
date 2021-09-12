@@ -15,7 +15,7 @@ class Usuario(AbstractUser):
     apellido_materno = models.CharField(
         max_length=50, null=True, verbose_name="Apellido Materno"
     )
-    rol = models.CharField(max_length=50, choices=ROLES, Required=False)
+    rol = models.CharField(max_length=50, choices=ROLES, required=False)
 
     class Meta:
         verbose_name_plural = "Usuarios"
